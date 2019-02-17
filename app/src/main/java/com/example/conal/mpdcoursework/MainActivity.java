@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.util.DisplayMetrics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,20 +33,45 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private String url1="";
     private String urlSource="http://quakes.bgs.ac.uk/feeds/MhSeismology.xml";
     private enum Orientation{ landscape, portrait}
+    private float aspectRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landscape);
-        // Set up the raw links to the graphical components
-        rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-        
-        startButton = (Button)findViewById(R.id.startButton);
-        startButton.setOnClickListener(this);
 
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            SetOrientation(Orientation.landscape);
+            // Set up the raw links to the graphical components
+            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+            startButton = (Button)findViewById(R.id.startButton);
+            startButton.setOnClickListener(this);
+        }
+        else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            setContentView(R.layout.phone_landscape);
+
+            SetOrientation(Orientation.portrait);
+            // Set up the raw links to the graphical components
+            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+            startButton = (Button)findViewById(R.id.startButton);
+            startButton.setOnClickListener(this);
+        }
+
+        aspectRatio = FindRatio();
         // More Code goes here
     }
+
+    private Float FindRatio()
+    {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return  ((float)metrics.heightPixels / (float)metrics.widthPixels);
+    }
+
 
     public void onClick(View aview)
     {
@@ -84,15 +110,31 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     private void SetOrientation(Orientation type)
     {
-        switch(type)
+        if(aspectRatio == 1.78)
         {
-            case landscape:
-                setContentView(R.layout.landscape);
-                break;
-            case portrait:
-                setContentView(R.layout.portrait);
-                break;
+            switch(type)
+            {
+                case landscape:
+                    setContentView(R.layout.phone_landscape);
+                    break;
+                case portrait:
+                    setContentView(R.layout.phone_portrait);
+                    break;
 
+            }
+        }
+        else if(aspectRatio == .75)
+        {
+            switch(type)
+            {
+                case landscape:
+                    setContentView(R.layout.landscape);
+                    break;
+                case portrait:
+                    setContentView(R.layout.portrait);
+                    break;
+
+            }
         }
     }
 

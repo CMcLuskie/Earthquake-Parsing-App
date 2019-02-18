@@ -19,8 +19,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:textAlignment="center"
-            android:text="Conall McLuskie,
-Student ID: S1509449"
+            android:text="This is Tablet Landscape"
             android:textSize="20sp" />
 
         <TextView

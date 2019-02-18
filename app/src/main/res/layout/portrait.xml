@@ -9,14 +9,14 @@
         android:id="@+id/salutation"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
-        android:text="Welcome to Mobile Platform Development"
+        android:text="This is tablet portrait"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/startButton"
         android:layout_width="227dp"
         android:layout_height="wrap_content"
-        android:text="Press to get data" />
+    android:text="Press to get data" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"

@@ -9,6 +9,7 @@
 package com.example.conal.mpdcoursework;
 
 import android.content.res.Configuration;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,10 @@ import android.util.DisplayMetrics;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
@@ -40,31 +43,86 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     {
         super.onCreate(savedInstanceState);
 
+        aspectRatio = FindRatio();
+        Log.e("MyTag",Float.toString(aspectRatio));
+
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            SetOrientation(Orientation.landscape);
-            // Set up the raw links to the graphical components
-            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-
-            startButton = (Button)findViewById(R.id.startButton);
-            startButton.setOnClickListener(this);
+            InitialiseView(Orientation.landscape);
         }
         else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
-            setContentView(R.layout.phone_landscape);
-
-            SetOrientation(Orientation.portrait);
-            // Set up the raw links to the graphical components
-            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-
-            startButton = (Button)findViewById(R.id.startButton);
-            startButton.setOnClickListener(this);
+            InitialiseView(Orientation.portrait);
         }
 
-        aspectRatio = FindRatio();
+
         // More Code goes here
     }
 
+    void InitialiseView(Orientation orientation)
+    {
+        if(aspectRatio >1.9 && aspectRatio <2|| aspectRatio > .5 && aspectRatio <.6)
+        {
+            Log.e("MyTag","is a phone");
+            switch(orientation)
+            {
+                case landscape:
+                    setContentView(R.layout.phone_landscape);
+
+                    SetOrientation(Orientation.portrait);
+                    // Set up the raw links to the graphical components
+                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+                    startButton = (Button)findViewById(R.id.startButton);
+                    startButton.setOnClickListener(this);
+                    break;
+                case portrait:
+                    setContentView(R.layout.phone_portrait);
+
+                    SetOrientation(Orientation.portrait);
+                    // Set up the raw links to the graphical components
+                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+                    startButton = (Button)findViewById(R.id.startButton);
+                    startButton.setOnClickListener(this);
+                    break;
+
+            }
+        }
+        else if(aspectRatio == .75 || (aspectRatio > 1.2 && aspectRatio<1.4)) //4:3 screen ratio
+        {
+            Log.e("MyTag","is a tablet");
+
+            switch(orientation)
+            {
+                case landscape:
+                   // setContentView(R.layout.landscape);
+
+                    SetOrientation(Orientation.landscape);
+                    // Set up the raw links to the graphical components
+                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+                    startButton = (Button)findViewById(R.id.startButton);
+                    startButton.setOnClickListener(this);
+                    break;
+                case portrait:
+                   // setContentView(R.layout.portrait);
+
+                    SetOrientation(Orientation.portrait);
+                    // Set up the raw links to the graphical components
+                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
+                    startButton = (Button)findViewById(R.id.startButton);
+                    startButton.setOnClickListener(this);
+                    break;
+
+            }
+        }
+        else
+        {
+            setContentView(R.layout.error);
+        }
+    }
     private Float FindRatio()
     {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -106,11 +164,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             startButton = (Button)findViewById(R.id.startButton);
             startButton.setOnClickListener(this);
         }
+        else {
+            setContentView(R.layout.error);
+        }
     }
 
     private void SetOrientation(Orientation type)
     {
-        if(aspectRatio == 1.78)
+        if(aspectRatio >1.9 && aspectRatio <2|| aspectRatio > .5 && aspectRatio <.6) //galaxy s8
         {
             switch(type)
             {
@@ -123,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
             }
         }
-        else if(aspectRatio == .75)
+        else if((aspectRatio == .75 )|| (aspectRatio == 12))
         {
             switch(type)
             {
@@ -135,6 +196,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     break;
 
             }
+        }
+        else
+        {
+            setContentView(R.layout.error);
         }
     }
 
@@ -171,10 +236,33 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 //
                 //
                 //
-                while ((inputLine = in.readLine()) != null)
+                inputLine = in.readLine();
+                inputLine = in.readLine();
+                while (((inputLine = in.readLine()) != null))
                 {
+                    if(!inputLine.startsWith("<description>") || inputLine.startsWith("<description>Recent"))
+                        continue;
+
+
+                    String[] information = inputLine.split(";");
+                    String date = information[0];
+                    String location = information[1];
+                    String bearings = information[2];
+                    String depth = information[3];
+                    String magnitude = information[4];
+
+                    String day = date.substring(31, 34);
+                    String dayNum = date.substring(35,38);
+                    String month = date.substring(39, 42);
+                    String year = date.substring(42, 47);
+
+                    Log.e("Day", day);
+                    Log.e("num", dayNum);
+                    Log.e("month", month);
+                    Log.e("year", year);
+
                     result = result + inputLine;
-                    Log.e("MyTag",inputLine);
+                    //Log.e("MyTag",inputLine);
 
                 }
                 in.close();
@@ -203,5 +291,58 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    class Earthquake
+    {
+        public Date date;
+        public Time time;
+        public String location;
+        public float latitude;
+        public float longitude;
+        public float depth;
+        public float magnitude;
+
+        public Earthquake(Date dateOccurred, Time timeOccurred, String locationOccurred,
+                          float latitudeOccurred, float longitudeOccurred,
+                          float depthOccurred, float magnitudeOccurred)
+        {
+            date = dateOccurred;
+            time = timeOccurred;
+            location = locationOccurred;
+            latitude = latitudeOccurred;
+            longitude = longitudeOccurred;
+            depth = depthOccurred;
+            magnitude = magnitudeOccurred;
+        }
+
+
+    }
+
+    class Date
+    {
+        public String dayName;
+        public int dayNumber;
+        public int year;
+
+        public Date(String dName, int dNumber, int yr)
+        {
+             dayName = dName;
+             dayNumber = dNumber;
+             year = yr;
+        }
+    }
+
+    class Time
+    {
+        public int hour;
+        public int minutes;
+        public int seconds;
+
+        public  Time(int hourOccured, int minuteOccured, int secondOccured)
+        {
+            hour = hourOccured;
+            minutes = minuteOccured;
+            seconds = secondOccured;
+        }
+    }
 }
 

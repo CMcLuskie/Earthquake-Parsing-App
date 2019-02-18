@@ -9,7 +9,7 @@
         android:id="@+id/salutation"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
-        android:text="Welcome to Mobile Platform Development"
+        android:text="This is Phone Portrait"
         android:textSize="20sp" />
 
     <Button

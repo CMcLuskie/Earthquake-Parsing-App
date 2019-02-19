@@ -251,15 +251,44 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     String depth = information[3];
                     String magnitude = information[4];
 
+                    //Date
                     String day = date.substring(31, 34);
                     String dayNum = date.substring(35,38);
+                    int dayNumValue = Integer.parseInt(dayNum);
                     String month = date.substring(39, 42);
                     String year = date.substring(42, 47);
+                    int yearValue = Integer.parseInt(year);
+                    //Time
+                    String hour = date.substring(48,50);
+                    int hourValue =  Integer.parseInt(hour);
+                    String minute = date.substring(51, 53);
+                    int minuteValue = Integer.parseInt(minute);
+                    String second = date.substring(54, 56);
+                    int secondValue = Integer.parseInt(second);
 
-                    Log.e("Day", day);
-                    Log.e("num", dayNum);
-                    Log.e("month", month);
-                    Log.e("year", year);
+                    Log.e("Info", day);
+                    Log.e("Info", Integer.toString(dayNumValue));
+                    Log.e("Info", month);
+                    Log.e("Info", year);
+
+                    Log.e("Info", hour);
+                    Log.e("Info", minute);
+                    Log.e("Info", second);
+
+                    //Location
+                    String locationName = location.substring(11, location.length());
+                    Log.e("Info", locationName);
+                    String latitude = bearings.substring(11, 17);
+                    String longitude = bearings.substring(18, bearings.length());
+                    Log.e("Info", latitude);
+                    Log.e("Info", longitude);
+                    //Power
+                    String depthValue = depth.substring(8, 10);
+                    Log.e("Info", depthValue);
+                    String magnitudeValue = magnitude.substring(13, 16);
+                    Log.e("Info", magnitudeValue);
+
+
 
                     result = result + inputLine;
                     //Log.e("MyTag",inputLine);

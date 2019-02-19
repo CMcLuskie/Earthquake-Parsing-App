@@ -25,7 +25,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
@@ -38,10 +40,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private enum Orientation{ landscape, portrait}
     private float aspectRatio;
 
+    private List<Earthquake> earthquakes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        earthquakes = new ArrayList<Earthquake>();
 
         aspectRatio = FindRatio();
         Log.e("MyTag",Float.toString(aspectRatio));
@@ -128,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return  ((float)metrics.heightPixels / (float)metrics.widthPixels);
+
+
     }
 
 
@@ -254,20 +262,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     //Date
                     String day = date.substring(31, 34);
                     String dayNum = date.substring(35,38);
-                    int dayNumValue = Integer.parseInt(dayNum);
+                    float dayNumValue = Float.parseFloat(dayNum);
                     String month = date.substring(39, 42);
-                    String year = date.substring(42, 47);
-                    int yearValue = Integer.parseInt(year);
+                    String year = date.substring(43, 47);
+                    float yearValue = Float.parseFloat(year);
                     //Time
                     String hour = date.substring(48,50);
-                    int hourValue =  Integer.parseInt(hour);
+                    float hourValue =  Float.parseFloat(hour);
                     String minute = date.substring(51, 53);
-                    int minuteValue = Integer.parseInt(minute);
+                    float minuteValue = Float.parseFloat(minute);
                     String second = date.substring(54, 56);
-                    int secondValue = Integer.parseInt(second);
+                    float secondValue = Float.parseFloat(second);
 
                     Log.e("Info", day);
-                    Log.e("Info", Integer.toString(dayNumValue));
+                    Log.e("Info", Float.toString(dayNumValue));
                     Log.e("Info", month);
                     Log.e("Info", year);
 
@@ -275,22 +283,35 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     Log.e("Info", minute);
                     Log.e("Info", second);
 
+                    Date dateClass = new Date(day, dayNumValue, month, yearValue);
+                    Time timeClass = new Time(hourValue, minuteValue, secondValue);
+
                     //Location
                     String locationName = location.substring(11, location.length());
                     Log.e("Info", locationName);
                     String latitude = bearings.substring(11, 17);
+                    float latitudeValue = Float.parseFloat(latitude);
                     String longitude = bearings.substring(18, bearings.length());
+                    float longitudeValue = Float.parseFloat(longitude);
                     Log.e("Info", latitude);
                     Log.e("Info", longitude);
                     //Power
                     String depthValue = depth.substring(8, 10);
+                    float depthFloat = Float.parseFloat(depthValue);
                     Log.e("Info", depthValue);
                     String magnitudeValue = magnitude.substring(13, 16);
+                    float magnitudeFloat = Float.parseFloat(magnitudeValue);
                     Log.e("Info", magnitudeValue);
 
+                    Earthquake earthquake = new Earthquake(dateClass, timeClass,
+                            locationName, latitudeValue, longitudeValue,
+                            depthFloat, magnitudeFloat);
+
+                    earthquakes.add(earthquake);
 
 
-                    result = result + inputLine;
+                    DisplayList();
+                    //result = result + earthquake.location;
                     //Log.e("MyTag",inputLine);
 
                 }
@@ -316,8 +337,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     rawDataDisplay.setText(result);
                 }
             });
-        }
 
+
+        }
+        void DisplayList()
+        {
+            for(int i = 0; i < earthquakes.size(); i++)
+            {
+                Earthquake earthquake = earthquakes.get(i);
+                result += "\n" + earthquake.location;
+            }
+        }
     }
 
     class Earthquake
@@ -349,24 +379,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     class Date
     {
         public String dayName;
-        public int dayNumber;
-        public int year;
+        public float dayNumber;
+        public String month;
+        public float year;
 
-        public Date(String dName, int dNumber, int yr)
+        public Date(String dName, float dNumber, String monthName, float yr)
         {
              dayName = dName;
              dayNumber = dNumber;
+             month = monthName;
              year = yr;
         }
     }
 
     class Time
     {
-        public int hour;
-        public int minutes;
-        public int seconds;
+        public float hour;
+        public float minutes;
+        public float seconds;
 
-        public  Time(int hourOccured, int minuteOccured, int secondOccured)
+        public  Time(float hourOccured, float minuteOccured, float secondOccured)
         {
             hour = hourOccured;
             minutes = minuteOccured;

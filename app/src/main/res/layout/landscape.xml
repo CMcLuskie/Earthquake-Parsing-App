@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/salutation"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -25,7 +24,6 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/salutation"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -38,7 +36,7 @@
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="227dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
@@ -53,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:text="Contains British Geological Survey materials ©NERC 2019"
+            android:text = "@string/legal_tag"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -75,6 +73,16 @@
             android:textSize="20sp" />
     </ScrollView>
 
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="195dp"
+        android:layout_marginBottom="181dp"
+        android:background="@drawable/button_background"
+        android:text="Press to get data" />
 </RelativeLayout>
 
 

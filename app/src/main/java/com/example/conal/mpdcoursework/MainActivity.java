@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     // Set up the raw links to the graphical components
                     rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
 
+                    rawDataDisplay.setText(result);
+
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
                     break;
@@ -88,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     SetOrientation(Orientation.portrait);
                     // Set up the raw links to the graphical components
                     rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+                    rawDataDisplay.setText(result);
+
 
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     SetOrientation(Orientation.landscape);
                     // Set up the raw links to the graphical components
                     rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+                    rawDataDisplay.setText(result);
 
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
@@ -117,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     SetOrientation(Orientation.portrait);
                     // Set up the raw links to the graphical components
                     rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+                    rawDataDisplay.setText(result);
 
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             SetOrientation(Orientation.landscape);
             // Set up the raw links to the graphical components
             rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+
 
             startButton = (Button)findViewById(R.id.startButton);
             startButton.setOnClickListener(this);

@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:text="Contains British Geological Survey materials ©NERC 2019"
+            android:text="@string/legal_tag"
             android:textSize="20sp" />
     </RelativeLayout>
 

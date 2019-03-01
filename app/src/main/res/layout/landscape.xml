@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical">
 
         <TextView
@@ -19,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:text="This is Tablet Landscape"
+            android:text="@string/name_ID"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -30,19 +32,18 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
             android:layout_marginTop="309dp"
-            android:text="Find Earthquakes:"
-            android:textAlignment="center"
+            android:text="@string/Data_Button_Descriptor"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="338dp"
+            android:layout_marginTop="337dp"
             android:layout_marginBottom="181dp"
-            android:text="Press to get data" />
+            android:text="@string/Data_Button" />
 
 
         <TextView
@@ -51,11 +52,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:text = "@string/legal_tag"
+            android:text="@string/legal_tag"
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="726dp"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
@@ -65,24 +66,71 @@
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp">
 
-        <TextView
-            android:id="@+id/rawDataDisplay"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="145dp"
-            android:text="Raw Data is Displayed here"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dateDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Date"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/timeDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Time"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/locationDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Location"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/magDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Magnitude"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/latDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Latitude"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/longDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Longitude"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/depthDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:text="@string/Placeholder_Depth"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/menuButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="195dp"
-        android:layout_marginBottom="181dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/button_background"
-        android:text="Press to get data" />
+        android:text="@string/Sort_Menu" />
 </RelativeLayout>
 
 

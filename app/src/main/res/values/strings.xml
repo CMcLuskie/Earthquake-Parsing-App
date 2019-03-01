@@ -2,5 +2,15 @@
     <string name="app_name">MPD Coursework</string>
     <string name="name_ID">Conall McLuskie S1509449</string>
     <string name="legal_tag">Contains British Geological Survey materials ©NERC 2019</string>
-    <string name="Data">Raw Data Displays here</string>
+    <string name="Option">Options</string>
+    <string name="Sort_Menu">Sort</string>
+    <string name="Data_Button">Press To Get Data</string>
+    <string name="Data_Button_Descriptor">Find Earthquakes: </string>
+    <string name="Placeholder_Date">Mon 01-Jan-2019</string>
+    <string name="Placeholder_Time">00:00:00</string>
+    <string name="Placeholder_Location">Glasgow, Scotland</string>
+    <string name="Placeholder_Latitude">55.747</string>
+    <string name="Placeholder_Longitude">55.747</string>
+    <string name="Placeholder_Depth">7km</string>
+    <string name="Placeholder_Magnitude">0.5</string>
 </resources>

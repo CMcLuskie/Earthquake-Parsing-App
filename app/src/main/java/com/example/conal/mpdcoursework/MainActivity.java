@@ -9,36 +9,52 @@
 package com.example.conal.mpdcoursework;
 
 import android.content.res.Configuration;
-import android.os.Debug;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.util.DisplayMetrics;
 
-import java.io.BufferedReader;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
 {
-    private TextView rawDataDisplay;
     private Button startButton;
-    private String result;
+    private String result = null;
     private String url1="";
     private String urlSource="http://quakes.bgs.ac.uk/feeds/MhSeismology.xml";
     private enum Orientation{ landscape, portrait}
     private float aspectRatio;
+
+    private TextView dateView;
+    private String dateString;
+    private TextView timeView;
+    private String timeString;
+    private TextView locationView;
+    private String locationString;
+    private TextView latView;
+    private String latString;
+    private TextView longView;
+    private String longString;
+    private TextView depthView;
+    private String depthString;
+    private TextView magView;
+    private String magString;
 
     private List<Earthquake> earthquakes;
 
@@ -77,9 +93,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                     SetOrientation(Orientation.portrait);
                     // Set up the raw links to the graphical components
-                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-
-                    rawDataDisplay.setText(result);
+                    getTextViews();
+                    setTextViews();
 
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
@@ -89,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                     SetOrientation(Orientation.portrait);
                     // Set up the raw links to the graphical components
-                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-                    rawDataDisplay.setText(result);
+                    getTextViews();
+                    setTextViews();
 
 
                     startButton = (Button)findViewById(R.id.startButton);
@@ -110,9 +125,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                     SetOrientation(Orientation.landscape);
                     // Set up the raw links to the graphical components
-                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-                    rawDataDisplay.setText(result);
-
+                    getTextViews();
+                    setTextViews();
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
                     break;
@@ -121,9 +135,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
                     SetOrientation(Orientation.portrait);
                     // Set up the raw links to the graphical components
-                    rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-                    rawDataDisplay.setText(result);
-
+                    getTextViews();
+                    setTextViews();
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
                     break;
@@ -144,6 +157,27 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    private void getTextViews()
+    {
+        dateView = (TextView)findViewById(R.id.dateDisplay);
+        timeView = (TextView)findViewById(R.id.timeDisplay);
+        locationView = (TextView)findViewById(R.id.locationDisplay);
+        latView = (TextView)findViewById(R.id.latDisplay);
+        longView = (TextView)findViewById(R.id.longDisplay);
+        depthView = (TextView)findViewById(R.id.depthDisplay);
+        magView = (TextView)findViewById(R.id.magDisplay);
+    }
+
+    private void setTextViews()
+    {
+        dateView.setText(dateString);
+        timeView.setText(timeString);
+        locationView.setText(locationString);
+        latView.setText(latString);
+        longView.setText(longString);
+        depthView.setText(depthString);
+        magView.setText(magString);
+    }
 
     public void onClick(View aview)
     {
@@ -164,9 +198,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         {
             SetOrientation(Orientation.landscape);
             // Set up the raw links to the graphical components
-            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-
-
+            getTextViews();
+            setTextViews();
             startButton = (Button)findViewById(R.id.startButton);
             startButton.setOnClickListener(this);
         }
@@ -174,7 +207,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         {
             SetOrientation(Orientation.portrait);
             // Set up the raw links to the graphical components
-            rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+            getTextViews();
+            setTextViews();
 
             startButton = (Button)findViewById(R.id.startButton);
             startButton.setOnClickListener(this);
@@ -205,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             {
                 case landscape:
                     setContentView(R.layout.landscape);
+
                     break;
                 case portrait:
                     setContentView(R.layout.portrait);
@@ -223,6 +258,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private class Task implements Runnable
     {
         private String url;
+        private XmlPullParserFactory factory= null;
+        private XmlPullParser parser = null;
+        private String text = null;
 
         public Task(String aurl)
         {
@@ -234,99 +272,55 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
             URL aurl;
             URLConnection yc;
-            BufferedReader in = null;
-            String inputLine = "";
+
 
 
             Log.e("MyTag","in run");
 
             try
             {
-                Log.e("MyTag","in try");
+                factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware((true));
+                parser = Xml.newPullParser();
+
                 aurl = new URL(url);
                 yc = aurl.openConnection();
-                in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+                parser.setInput(yc.getInputStream(), null);
                 //
                 // Throw away the first 2 header lines before parsing
                 //
-                //
-                //
-                inputLine = in.readLine();
-                inputLine = in.readLine();
-                while (((inputLine = in.readLine()) != null))
+                parser.nextTag();
+                parser.nextTag();
+                //inputLine = in.readLine();
+                //inputLine = in.readLine();
+                int eventType = parser.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT)
                 {
-                    if(!inputLine.startsWith("<description>") || inputLine.startsWith("<description>Recent"))
-                        continue;
+                    String tagName = parser.getName();
+                    switch (eventType)
+                    {
+                        case XmlPullParser.START_TAG:
+                            break;
+                        case XmlPullParser.TEXT:
+                            text = parser.getText();
+                            break;
+                        case XmlPullParser.END_TAG:
+                            if(tagName.equalsIgnoreCase("description")) {
+                                TextParse();
+                                DisplayList();
+                            }
+                            break;
 
-
-                    String[] information = inputLine.split(";");
-                    String date = information[0];
-                    String location = information[1];
-                    String bearings = information[2];
-                    String depth = information[3];
-                    String magnitude = information[4];
-
-                    //Date
-                    String day = date.substring(31, 34);
-                    String dayNum = date.substring(35,38);
-                    float dayNumValue = Float.parseFloat(dayNum);
-                    String month = date.substring(39, 42);
-                    String year = date.substring(43, 47);
-                    float yearValue = Float.parseFloat(year);
-                    //Time
-                    String hour = date.substring(48,50);
-                    float hourValue =  Float.parseFloat(hour);
-                    String minute = date.substring(51, 53);
-                    float minuteValue = Float.parseFloat(minute);
-                    String second = date.substring(54, 56);
-                    float secondValue = Float.parseFloat(second);
-
-                    Log.e("Info", day);
-                    Log.e("Info", Float.toString(dayNumValue));
-                    Log.e("Info", month);
-                    Log.e("Info", year);
-
-                    Log.e("Info", hour);
-                    Log.e("Info", minute);
-                    Log.e("Info", second);
-
-                    Date dateClass = new Date(day, dayNumValue, month, yearValue);
-                    Time timeClass = new Time(hourValue, minuteValue, secondValue);
-
-                    //Location
-                    String locationName = location.substring(11, location.length());
-                    Log.e("Info", locationName);
-                    String latitude = bearings.substring(11, 17);
-                    float latitudeValue = Float.parseFloat(latitude);
-                    String longitude = bearings.substring(18, bearings.length());
-                    float longitudeValue = Float.parseFloat(longitude);
-                    Log.e("Info", latitude);
-                    Log.e("Info", longitude);
-                    //Power
-                    String depthValue = depth.substring(8, 10);
-                    float depthFloat = Float.parseFloat(depthValue);
-                    Log.e("Info", depthValue);
-                    String magnitudeValue = magnitude.substring(13, 16);
-                    float magnitudeFloat = Float.parseFloat(magnitudeValue);
-                    Log.e("Info", magnitudeValue);
-
-                    Earthquake earthquake = new Earthquake(dateClass, timeClass,
-                            locationName, latitudeValue, longitudeValue,
-                            depthFloat, magnitudeFloat);
-
-                    earthquakes.add(earthquake);
-
-
-                    DisplayList();
-                    //result = result + earthquake.location;
-                    //Log.e("MyTag",inputLine);
+                    }
+                   eventType =  parser.next();
 
                 }
-                in.close();
             }
             catch (IOException ae)
             {
                 Log.e("MyTag", "ioexception");
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
             }
 
             //
@@ -341,18 +335,99 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             {
                 public void run() {
                     Log.d("UI thread", "I am the UI thread");
-                    rawDataDisplay.setText(result);
+                    setTextViews();
                 }
             });
 
 
         }
+
+        void TextParse()
+        {
+            if (text.contains(";"))
+            {
+                String[] information = text.split(";");
+                String date = information[0];
+                String location = information[1];
+                String bearings = information[2];
+                String depth = information[3];
+                String magnitude = information[4];
+
+
+                //Date
+                String day = date.substring(18, 21);
+                String dayNum = date.substring(22 , 25);
+                float dayNumValue = Float.parseFloat(dayNum);
+                String month = date.substring(26, 29);
+                String year = date.substring(30, 35);
+                float yearValue = Float.parseFloat(year);
+
+                //Time
+                String hour = date.substring(35, 37);
+                float hourValue = Float.parseFloat(hour);
+                String minute = date.substring(38, 40);
+                float minuteValue = Float.parseFloat(minute);
+                String second = date.substring(41, 43);
+                float secondValue = Float.parseFloat(second);
+
+
+                Log.e("Info", day);
+                Log.e("Info", Float.toString(dayNumValue));
+                Log.e("Info", month);
+                Log.e("Info", year);
+
+                Log.e("Info", hour);
+                Log.e("Info", minute);
+                Log.e("Info", second);
+
+                Date dateClass = new Date(day, dayNumValue, month, yearValue);
+                Time timeClass = new Time(hourValue, minuteValue, secondValue);
+
+                //Location
+                String locationName = location.substring(11, location.length());
+                Log.e("Info", locationName);
+                String latitude = bearings.substring(11, 17);
+                float latitudeValue = Float.parseFloat(latitude);
+                String longitude = bearings.substring(18, bearings.length());
+                float longitudeValue = Float.parseFloat(longitude);
+                Log.e("Info", latitude);
+                Log.e("Info", longitude);
+                //Power
+                String depthValue = depth.substring(8, 10);
+                float depthFloat = Float.parseFloat(depthValue);
+                Log.e("Info", depthValue);
+                String magnitudeValue = magnitude.substring(13, 16);
+                float magnitudeFloat = Float.parseFloat(magnitudeValue);
+                Log.e("Info", magnitudeValue);
+
+                Earthquake earthquake = new Earthquake(dateClass, timeClass,
+                        locationName, latitudeValue, longitudeValue,
+                        depthFloat, magnitudeFloat);
+
+                earthquakes.add(earthquake);
+            }
+        }
+
         void DisplayList()
         {
             for(int i = 0; i < earthquakes.size(); i++)
             {
                 Earthquake earthquake = earthquakes.get(i);
-                result += "\n" + earthquake.location;
+                Date date = earthquake.date;
+                Time time = earthquake.time;
+
+                dateString += "Date: " + date.dayName + " " +
+                        String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year)+ " " + "\n";
+                timeString += "Time: " +
+                        String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes)+ ":" + String.format("%.0f", time.seconds)+ " " + "\n";
+                locationString += "Location: " + earthquake.location + " " + "\n";
+                //Shit Under Here doesnt display
+                latString += "Latitude: " + String.format("%.2f", earthquake.latitude) + " " + "\n";
+                longString += "Longitude: " + String.format("%.2f", earthquake.longitude) + " " + "\n";
+                depthString += "Depth: " + String.format("%.0f", earthquake.depth) + "km " + "\n";
+                magString += "Magnitude: " + String.format("%.0f", earthquake.magnitude) + " " + "\n";
+
+
             }
         }
     }
@@ -366,6 +441,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         public float longitude;
         public float depth;
         public float magnitude;
+
 
         public Earthquake(Date dateOccurred, Time timeOccurred, String locationOccurred,
                           float latitudeOccurred, float longitudeOccurred,

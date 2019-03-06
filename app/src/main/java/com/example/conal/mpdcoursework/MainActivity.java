@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 Time timeClass = new Time(hourValue, minuteValue, secondValue);
 
                 //Location
-                String locationName = location.substring(11, location.length());
+                String locationName = location.substring(11, location.length()).trim();
                 Log.e("Info", locationName);
                 String latitude = bearings.substring(11, 17);
                 float latitudeValue = Float.parseFloat(latitude);
@@ -412,23 +412,44 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         {
             for(int i = 0; i < earthquakes.size(); i++)
             {
+
                 Earthquake earthquake = earthquakes.get(i);
                 Date date = earthquake.date;
                 Time time = earthquake.time;
 
-                dateString += "Date: " + date.dayName + " " +
+                if(dateString == null)
+                {
+                    NullNullifier();
+                }
+
+                dateString +=  date.dayName + " " +
                         String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year)+ " " + "\n";
-                timeString += "Time: " +
+                timeString +=
                         String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes)+ ":" + String.format("%.0f", time.seconds)+ " " + "\n";
-                locationString += "Location: " + earthquake.location + " " + "\n";
+                locationString +=  earthquake.location + " " + "\n";
                 //Shit Under Here doesnt display
-                latString += "Latitude: " + String.format("%.2f", earthquake.latitude) + " " + "\n";
-                longString += "Longitude: " + String.format("%.2f", earthquake.longitude) + " " + "\n";
-                depthString += "Depth: " + String.format("%.0f", earthquake.depth) + "km " + "\n";
-                magString += "Magnitude: " + String.format("%.0f", earthquake.magnitude) + " " + "\n";
+                latString += String.format("%.2f", earthquake.latitude) + " " + "\n";
+                longString +=  String.format("%.2f", earthquake.longitude) + " " + "\n";
+                depthString +=  String.format("%.0f", earthquake.depth) + "km " + "\n";
+                latString += Float.toString(earthquake.latitude) + " " + "\n";
+                longString += Float.toString(earthquake.longitude) + " " + "\n";
+                depthString += Float.toString(earthquake.depth) + " " + "\n";
+                //this displays
+                 magString +=  String.format("%.0f", earthquake.magnitude) + " " + "\n";
 
 
             }
+        }
+
+        void NullNullifier()
+        {
+            dateString = "";
+            timeString="";
+            locationString = "";
+            latString = "";
+            longString = "";
+            depthString = "";
+            magString = "";
         }
     }
 

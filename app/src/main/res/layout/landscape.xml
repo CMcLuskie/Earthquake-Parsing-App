@@ -67,57 +67,62 @@
         android:layout_marginRight="0dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <TextView
                 android:id="@+id/dateDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Date"
                 android:textSize="20sp" />
             <TextView
                 android:id="@+id/timeDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Time"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/locationDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Location"
+                android:textSize="20sp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/BUTTON_More_Info"/>
+
+           <!-- <TextView
+                android:id="@+id/depthDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Depth"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/magDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Magnitude"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/latDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Latitude"
                 android:textSize="20sp" />
             <TextView
                 android:id="@+id/longDisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="145dp"
+                android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Longitude"
-                android:textSize="20sp" />
-            <TextView
-                android:id="@+id/depthDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="145dp"
-                android:text="@string/Placeholder_Depth"
-                android:textSize="20sp" />
-
+                android:textSize="20sp" />-->
 
         </LinearLayout>
+
     </ScrollView>
 
     <Button

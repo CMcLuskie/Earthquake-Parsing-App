@@ -4,7 +4,7 @@
     <string name="legal_tag">Contains British Geological Survey materials ©NERC 2019</string>
     <string name="Option">Options</string>
     <string name="Sort_Menu">Sort</string>
-    <string name="Data_Button">Press To Get Data</string>
+    <string name="BUTTON_Find_Data">Press To Get Data</string>
     <string name="Data_Button_Descriptor">Find Earthquakes: </string>
     <string name="Placeholder_Date">Mon 01-Jan-2019</string>
     <string name="Placeholder_Time">00:00:00</string>
@@ -13,4 +13,7 @@
     <string name="Placeholder_Longitude">55.747</string>
     <string name="Placeholder_Depth">7km</string>
     <string name="Placeholder_Magnitude">0.5</string>
+    <string name="Data_Header_Date">Date</string>
+    <string name="Data_Header_Time">Time</string>
+    <string name="BUTTON_More_Info">More Info</string>
 </resources>

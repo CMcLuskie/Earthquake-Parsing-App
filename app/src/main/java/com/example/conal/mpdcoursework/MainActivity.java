@@ -8,14 +8,20 @@
 // Update the package name to include your Student Identifier
 package com.example.conal.mpdcoursework;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.util.DisplayMetrics;
@@ -56,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private TextView magView;
     private String magString;
 
+    private RecyclerView dataDisplay;
+    private RecyclerView.Adapter dataAdapter;
+    private RecyclerView.LayoutManager dataLayoutMgr;
+
     private List<Earthquake> earthquakes;
 
     @Override
@@ -79,6 +89,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
 
         // More Code goes here
+    }
+
+    void InitialiseRecycleView()
+    {
+        Log.e("Info", "Here0");
+        dataDisplay = (RecyclerView)findViewById(R.id.dataDisplay);
+        dataDisplay.setHasFixedSize(true);
+
+        dataLayoutMgr = new LinearLayoutManager(this);
+        dataDisplay.setLayoutManager(dataLayoutMgr);
+        startProgress();
+        Log.e("Info", "HEre");
+
+        dataAdapter = new DataAdapter(earthquakes, this);
+
+        dataDisplay.setAdapter(dataAdapter);
     }
 
     void InitialiseView(Orientation orientation)
@@ -124,9 +150,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                    // setContentView(R.layout.landscape);
 
                     SetOrientation(Orientation.landscape);
+                    InitialiseRecycleView();
                     // Set up the raw links to the graphical components
-                    getTextViews();
-                    setTextViews();
+                    /*getTextViews();
+                    setTextViews();*/
                     startButton = (Button)findViewById(R.id.startButton);
                     startButton.setOnClickListener(this);
                     break;
@@ -157,17 +184,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
-    private void getTextViews()
-    {
-        dateView = (TextView)findViewById(R.id.dateDisplay);
-        timeView = (TextView)findViewById(R.id.timeDisplay);
-        locationView = (TextView)findViewById(R.id.locationDisplay);
-        latView = (TextView)findViewById(R.id.latDisplay);
+    private void getTextViews() {
+       /* dateView = (TextView) findViewById(R.id.dateDisplay);
+        timeView = (TextView) findViewById(R.id.timeDisplay);
+        locationView = (TextView) findViewById(R.id.locationDisplay);*/
+        /*latView = (TextView)findViewById(R.id.latDisplay);
         longView = (TextView)findViewById(R.id.longDisplay);
         depthView = (TextView)findViewById(R.id.depthDisplay);
         magView = (TextView)findViewById(R.id.magDisplay);
+    }*/
     }
-
     private void setTextViews()
     {
         dateView.setText(dateString);
@@ -181,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     public void onClick(View aview)
     {
-        startProgress();
+        //startProgress();
     }
 
     public void startProgress()
@@ -307,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                         case XmlPullParser.END_TAG:
                             if(tagName.equalsIgnoreCase("description")) {
                                 TextParse();
-                                DisplayList();
+                                //DisplayList();
                             }
                             break;
 
@@ -410,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
         void DisplayList()
         {
-            for(int i = 0; i < earthquakes.size(); i++)
+           /* for(int i = 0; i < earthquakes.size(); i++)
             {
 
                 Earthquake earthquake = earthquakes.get(i);
@@ -438,7 +464,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                  magString +=  String.format("%.0f", earthquake.magnitude) + " " + "\n";
 
 
-            }
+            }*/
+           InitialiseRecycleView();
         }
 
         void NullNullifier()
@@ -451,6 +478,56 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             depthString = "";
             magString = "";
         }
+    }
+
+    private class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
+    {
+        List<Earthquake> earthquakes;
+        Context context;
+
+        public DataAdapter(List<Earthquake> earthquakes, Context context) {
+            this.earthquakes = earthquakes;
+            this.context = context;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.earthquake_layout, viewGroup, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+            Earthquake earthquake = earthquakes.get(i);
+
+            Date date = earthquake.date;
+            viewHolder.dateView.setText(String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year));
+            Time time = earthquake.time;
+            viewHolder.timeView.setText(String.format("%.0f", time.hour) + "/" + String.format("%.0f", time.minutes) + "/" + String.format("%.0f", time.seconds));
+            viewHolder.locationView.setText(earthquake.location);
+        }
+
+        @Override
+        public int getItemCount() {
+            return earthquakes.size();
+        }
+
+        public class ViewHolder extends  RecyclerView.ViewHolder
+       {
+            public TextView dateView;
+            public TextView timeView;
+            public TextView locationView;
+           public Button infoButton;
+
+           public ViewHolder(@NonNull View itemView) {
+               super(itemView);
+               dateView = (TextView)itemView.findViewById(R.id.dateDisplay);
+               timeView = (TextView)itemView.findViewById(R.id.timeDisplay);
+               locationView = (TextView) itemView.findViewById(R.id.locationDisplay);
+               infoButton = (Button) itemView.findViewById(R.id.infoButton);
+           }
+       }
     }
 
     class Earthquake
@@ -510,4 +587,5 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         }
     }
 }
+
 

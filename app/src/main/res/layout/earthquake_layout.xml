@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <LinearLayout
+            android:id="@+id/earthquakeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dateDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Date"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/timeDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Time"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/locationDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Location"
+                android:textSize="20sp" />
+
+
+
+            <!--<TextView
+                android:id="@+id/depthDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Depth"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/magDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Magnitude"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/latDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Latitude"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/longDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder_Longitude"
+                android:textSize="20sp" />-->
+            <Button
+				android:id="@+id/infoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/BUTTON_More_Info" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

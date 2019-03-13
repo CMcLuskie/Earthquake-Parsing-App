@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Conall McLuskie
+S1509449
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -6,43 +10,44 @@
 
     <RelativeLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="116dp"
+        android:layout_height="338dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="1dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/salutation"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
+            android:text="@string/name_ID"
             android:textAlignment="center"
-            android:text="This is Phone Landscape"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/salutation"
+        <!--<TextView
             android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="116dp"
-            android:textAlignment="center"
-            android:text="Find Earthquakes:"
-            android:textSize="20sp" />
+            android:layout_marginTop="309dp"
+            android:text="@string/Data_Button_Descriptor"
+            android:textSize="20sp" />-->
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="227dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="153dp"
-            android:layout_marginBottom="0dp"
-            android:text="Press to get data" />
+            android:layout_marginTop="337dp"
+            android:layout_marginBottom="181dp"
+            android:text="@string/BUTTON_Find_Data" />
 
 
         <TextView
@@ -55,33 +60,25 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="400dp"
-        android:layout_height="fill_parent"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dataDisplay"
+        android:layout_width="564dp"
+        android:layout_height="338dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_marginEnd="2dp">
 
-        <TextView
-            android:id="@+id/rawDataDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="145dp"
-            android:text="Raw Data is Displayed here"
-            android:textSize="20sp" />
-    </ScrollView>
-
+    </android.support.v7.widget.RecyclerView>
     <Button
         android:id="@+id/menuButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/button_background"
-        android:textSize="10dp"
-        android:text="@string/Option" />
+        android:text="@string/Sort_Menu" />
 </RelativeLayout>

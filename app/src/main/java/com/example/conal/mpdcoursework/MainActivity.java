@@ -9,6 +9,7 @@
 package com.example.conal.mpdcoursework;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -37,7 +38,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+Conall McLuskie
+S1509449
+ */
 public class MainActivity extends AppCompatActivity implements OnClickListener
 {
     private Button startButton;
@@ -72,10 +76,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        startProgress();
 
         earthquakes = new ArrayList<Earthquake>();
-
         aspectRatio = FindRatio();
+
         Log.e("MyTag",Float.toString(aspectRatio));
 
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -93,79 +98,47 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     void InitialiseRecycleView()
     {
-        Log.e("Info", "Here0");
         dataDisplay = (RecyclerView)findViewById(R.id.dataDisplay);
         dataDisplay.setHasFixedSize(true);
-
         dataLayoutMgr = new LinearLayoutManager(this);
         dataDisplay.setLayoutManager(dataLayoutMgr);
-        startProgress();
-        Log.e("Info", "HEre");
-
         dataAdapter = new DataAdapter(earthquakes, this);
-
         dataDisplay.setAdapter(dataAdapter);
     }
 
     void InitialiseView(Orientation orientation)
     {
-        if(aspectRatio >1.9 && aspectRatio <2|| aspectRatio > .5 && aspectRatio <.6)
+        Log.e("Window", Float.toString(aspectRatio));
+        if(aspectRatio >1.6 && aspectRatio <1.7|| aspectRatio > .5 && aspectRatio <.6)
         {
-            Log.e("MyTag","is a phone");
             switch(orientation)
             {
                 case landscape:
                     setContentView(R.layout.phone_landscape);
-
-                    SetOrientation(Orientation.portrait);
-                    // Set up the raw links to the graphical components
-                    getTextViews();
-                    setTextViews();
-
-                    startButton = (Button)findViewById(R.id.startButton);
-                    startButton.setOnClickListener(this);
+                    SetOrientation(Orientation.landscape);
+                    InitialiseRecycleView();
                     break;
                 case portrait:
                     setContentView(R.layout.phone_portrait);
-
                     SetOrientation(Orientation.portrait);
-                    // Set up the raw links to the graphical components
-                    getTextViews();
-                    setTextViews();
-
-
-                    startButton = (Button)findViewById(R.id.startButton);
-                    startButton.setOnClickListener(this);
+                    InitialiseRecycleView();
                     break;
 
             }
         }
         else if(aspectRatio == .75 || (aspectRatio > 1.2 && aspectRatio<1.4)) //4:3 screen ratio
         {
-            Log.e("MyTag","is a tablet");
 
             switch(orientation)
             {
                 case landscape:
-                   // setContentView(R.layout.landscape);
 
                     SetOrientation(Orientation.landscape);
                     InitialiseRecycleView();
-                    // Set up the raw links to the graphical components
-                    /*getTextViews();
-                    setTextViews();*/
-                    startButton = (Button)findViewById(R.id.startButton);
-                    startButton.setOnClickListener(this);
                     break;
                 case portrait:
-                   // setContentView(R.layout.portrait);
-
                     SetOrientation(Orientation.portrait);
-                    // Set up the raw links to the graphical components
-                    getTextViews();
-                    setTextViews();
-                    startButton = (Button)findViewById(R.id.startButton);
-                    startButton.setOnClickListener(this);
+                    InitialiseRecycleView();
                     break;
 
             }
@@ -175,39 +148,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             setContentView(R.layout.error);
         }
     }
-    private Float FindRatio()
-    {
+    private Float FindRatio() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        return  ((float)metrics.heightPixels / (float)metrics.widthPixels);
+        return ((float) metrics.heightPixels / (float) metrics.widthPixels);
 
 
-    }
-
-    private void getTextViews() {
-       /* dateView = (TextView) findViewById(R.id.dateDisplay);
-        timeView = (TextView) findViewById(R.id.timeDisplay);
-        locationView = (TextView) findViewById(R.id.locationDisplay);*/
-        /*latView = (TextView)findViewById(R.id.latDisplay);
-        longView = (TextView)findViewById(R.id.longDisplay);
-        depthView = (TextView)findViewById(R.id.depthDisplay);
-        magView = (TextView)findViewById(R.id.magDisplay);
-    }*/
-    }
-    private void setTextViews()
-    {
-        dateView.setText(dateString);
-        timeView.setText(timeString);
-        locationView.setText(locationString);
-        latView.setText(latString);
-        longView.setText(longString);
-        depthView.setText(depthString);
-        magView.setText(magString);
     }
 
     public void onClick(View aview)
     {
-        //startProgress();
+        if(aview.getId() == R.id.startButton)
+        startProgress();
+        if(aview.getId() == R.id.infoButton)
+            startActivity(new Intent(MainActivity.this, InformationWindow.class));
+
     }
 
     public void startProgress()
@@ -222,22 +177,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         super.onConfigurationChanged(newConfig);
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
+            startProgress();
             SetOrientation(Orientation.landscape);
-            // Set up the raw links to the graphical components
-            getTextViews();
-            setTextViews();
-            startButton = (Button)findViewById(R.id.startButton);
-            startButton.setOnClickListener(this);
+            InitialiseRecycleView();
+
         }
         else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
         {
+            startProgress();
             SetOrientation(Orientation.portrait);
-            // Set up the raw links to the graphical components
-            getTextViews();
-            setTextViews();
+            InitialiseRecycleView();
 
-            startButton = (Button)findViewById(R.id.startButton);
-            startButton.setOnClickListener(this);
         }
         else {
             setContentView(R.layout.error);
@@ -246,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     private void SetOrientation(Orientation type)
     {
-        if(aspectRatio >1.9 && aspectRatio <2|| aspectRatio > .5 && aspectRatio <.6) //galaxy s8
+        if(aspectRatio >1.6 && aspectRatio <1.7 || aspectRatio > .5 && aspectRatio <.6) //16:9
         {
             switch(type)
             {
@@ -259,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
             }
         }
-        else if((aspectRatio == .75 )|| (aspectRatio == 12))
+        else if((aspectRatio == .75 )|| (aspectRatio > 1.2 && aspectRatio<1.4))
         {
             switch(type)
             {
@@ -333,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                         case XmlPullParser.END_TAG:
                             if(tagName.equalsIgnoreCase("description")) {
                                 TextParse();
-                                //DisplayList();
+                                //InitialiseRecycleView();
                             }
                             break;
 
@@ -361,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             {
                 public void run() {
                     Log.d("UI thread", "I am the UI thread");
-                    setTextViews();
+                  //  setTextViews();
                 }
             });
 
@@ -493,19 +443,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            //1
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.earthquake_layout, viewGroup, false);
-            return new ViewHolder(v);
+            return new ViewHolder(v, earthquakes.get(i));
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
             Earthquake earthquake = earthquakes.get(i);
-
+//3
+            viewHolder.earthquake = earthquake;
             Date date = earthquake.date;
-            viewHolder.dateView.setText(String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year));
+            viewHolder.dateView.setText("Date: "+ String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year) + " ");
             Time time = earthquake.time;
-            viewHolder.timeView.setText(String.format("%.0f", time.hour) + "/" + String.format("%.0f", time.minutes) + "/" + String.format("%.0f", time.seconds));
-            viewHolder.locationView.setText(earthquake.location);
+            viewHolder.timeView.setText("Time: "+ String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes) + ":" + String.format("%.0f", time.seconds) + " ");
+            viewHolder.locationView.setText( earthquake.location);
         }
 
         @Override
@@ -513,19 +465,41 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             return earthquakes.size();
         }
 
-        public class ViewHolder extends  RecyclerView.ViewHolder
+        public class ViewHolder extends  RecyclerView.ViewHolder implements OnClickListener
        {
+           //2
             public TextView dateView;
             public TextView timeView;
             public TextView locationView;
            public Button infoButton;
+           Earthquake earthquake;
 
-           public ViewHolder(@NonNull View itemView) {
+           public ViewHolder(@NonNull View itemView, Earthquake aearthquake) {
                super(itemView);
+               earthquake = aearthquake;
                dateView = (TextView)itemView.findViewById(R.id.dateDisplay);
                timeView = (TextView)itemView.findViewById(R.id.timeDisplay);
                locationView = (TextView) itemView.findViewById(R.id.locationDisplay);
                infoButton = (Button) itemView.findViewById(R.id.infoButton);
+               infoButton.setOnClickListener(this);
+
+           }
+
+           public void onClick(View view){
+               Intent intent = new Intent(MainActivity.this, InformationWindow.class);
+               Date date = earthquake.date;
+               Time time = earthquake.time;
+               Log.e("Window", earthquake.location);
+               intent.putExtra("date", String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year));
+               intent.putExtra("time", String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes) + ":" + String.format("%.0f", time.seconds));
+               intent.putExtra("location", earthquake.location);
+               intent.putExtra("latitude", String.format("%.3f", earthquake.latitude));
+               intent.putExtra("longitude", String.format("%.3f", earthquake.longitude));
+               intent.putExtra("depth", String.format("%.0f", earthquake.depth));
+               intent.putExtra("magnitude", dateString.format("%.1f", earthquake.magnitude));
+               startActivity(intent);
+
+
            }
        }
     }

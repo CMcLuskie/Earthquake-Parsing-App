@@ -16,4 +16,21 @@
     <string name="Data_Header_Date">Date</string>
     <string name="Data_Header_Time">Time</string>
     <string name="BUTTON_More_Info">More Info</string>
+    <string name="TITLE_Sort">Sort Menu</string>
+    <string name="BUTTON_North_Sort">North</string>
+    <string name="BUTTON_East_Sort">East</string>
+    <string name="BUTTON_West_Sort">West</string>
+    <string name="BUTTON_South_Sort">South</string>
+    <string-array name="DROPDOWN_Values">
+        <item>Location</item>
+        <item>Date + Time</item>
+        <item>Magnitude</item>
+        <item>Depth</item>
+    </string-array>
+
+    <string-array name="DROPDOWN_Sort_Conditions">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
 </resources>

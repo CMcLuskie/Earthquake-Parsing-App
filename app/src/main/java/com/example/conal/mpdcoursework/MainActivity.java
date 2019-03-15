@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -72,6 +74,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     private List<Earthquake> earthquakes;
 
+
+    private Button northSortButton;
+    private Button eastSortButton;
+    private Button southSortButton;
+    private Button westSortButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -98,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     void InitialiseRecycleView()
     {
+        if(dataDisplay != null)
+            dataDisplay = null;
+
         dataDisplay = (RecyclerView)findViewById(R.id.dataDisplay);
         dataDisplay.setHasFixedSize(true);
         dataLayoutMgr = new LinearLayoutManager(this);
@@ -162,6 +173,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         startProgress();
         if(aview.getId() == R.id.infoButton)
             startActivity(new Intent(MainActivity.this, InformationWindow.class));
+        if(aview.getId() == R.id.sortNorthButton)
+            Sort(SortCondition.North, SortValue.Direction);
+        if(aview.getId() == R.id.sortEastButton)
+            Sort(SortCondition.East, SortValue.Direction);
+        if(aview.getId() == R.id.sortSouthButton)
+            Sort(SortCondition.South, SortValue.Direction);
+        if(aview.getId() == R.id.sortWestButton)
+            Sort(SortCondition.West, SortValue.Direction);
+
+
+
 
     }
 
@@ -227,7 +249,82 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         {
             setContentView(R.layout.error);
         }
+
+        northSortButton  = (Button)findViewById(R.id.sortNorthButton);
+        northSortButton.setOnClickListener(this);
+        eastSortButton  = (Button)findViewById(R.id.sortEastButton);
+        eastSortButton.setOnClickListener(this);
+        southSortButton  = (Button)findViewById(R.id.sortSouthButton);
+        southSortButton.setOnClickListener(this);
+        westSortButton  = (Button)findViewById(R.id.sortWestButton);
+        westSortButton.setOnClickListener(this);
     }
+
+    private enum SortCondition
+    {
+        North, East, South, West,
+        Ascending, Descending
+    }
+
+    private enum SortValue
+    {
+        LocationName, DateTime,
+        Magnitude, Depth, Direction
+    }
+    private void Sort(SortCondition condition, SortValue value)
+    {
+        switch (condition)
+        {
+            case North:
+                Collections.sort(earthquakes, new SortNorthMost());
+                break;
+            case East:
+                Collections.sort(earthquakes, new SortEastMost());
+                break;
+            case South:
+                Collections.sort(earthquakes, new SortSouthMost());
+                break;
+            case West:
+                Collections.sort(earthquakes, new SortWestMost());
+                break;
+            case Ascending:
+                switch (value)
+                {
+                    case LocationName:
+                        Collections.sort(earthquakes, new LocationNameAscending());
+                         break;
+                    case DateTime:
+                      // Collections.sort(earthquakes, new )
+                        break;
+                    case Magnitude:
+                        Collections.sort(earthquakes, new SortMagAscending());
+                        break;
+                    case Depth:
+                      //  Collections.sort(earthquakes, new Sort)
+                        break;
+                }
+                break;
+            case Descending:
+                switch (value)
+                {
+                    case LocationName:
+                        Collections.sort(earthquakes, new LocationNameDescending());
+                        break;
+                    case DateTime:
+
+                        break;
+                    case Magnitude:
+                        Collections.sort(earthquakes, new SortMagDescending());
+                        break;
+                    case Depth:
+
+                        break;
+                }
+                break;
+        }
+        InitialiseRecycleView();
+    }
+
 
     // Need separate thread to access the internet resource over network
     // Other neater solutions should be adopted in later iterations.
@@ -502,6 +599,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
            }
        }
+
     }
 
     class Earthquake
@@ -560,6 +658,87 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             seconds = secondOccured;
         }
     }
+
+    class LocationNameAscending implements Comparator<Earthquake>
+    {
+
+        public int compare(Earthquake a, Earthquake b)
+        {
+                return a.location.compareTo(b.location);
+        }
+    }
+    class LocationNameDescending implements Comparator<Earthquake>
+    {
+
+        public int compare(Earthquake a, Earthquake b)
+        {
+            return b.location.compareTo(a.location);
+        }
+    }
+
+    class SortNorthMost implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aLat =  a.latitude * 1000;
+            float bLat = b.latitude * 1000;
+
+            return (int)bLat - (int)aLat;
+        }
+    }
+    class SortSouthMost implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aLat =  a.latitude * 1000;
+            float bLat = b.latitude * 1000;
+
+            return (int)aLat - (int)bLat;
+        }
+    }
+    class SortEastMost implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aLong =  a.longitude * 1000;
+            float bLong = b.longitude * 1000;
+
+            return (int)bLong - (int)aLong;
+        }
+    }
+    class SortWestMost implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aLong =  a.longitude * 1000;
+            float bLong = b.longitude * 1000;
+
+            return (int)aLong - (int)bLong;
+        }
+    }
+
+    class SortMagAscending implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aMag =  a.magnitude * 10;
+            float bMag = b.magnitude * 10;
+
+            return (int)bMag - (int)aMag;
+        }
+    }
+
+    class SortMagDescending implements Comparator<Earthquake>
+    {
+        public  int compare (Earthquake a, Earthquake b)
+        {
+            float aMag =  a.magnitude * 10;
+            float bMag = b.magnitude * 10;
+
+            return (int)aMag - (int)bMag;
+        }
+    }
+
 }
 
 

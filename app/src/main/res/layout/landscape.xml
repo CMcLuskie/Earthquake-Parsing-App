@@ -15,7 +15,7 @@ S1509449
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="731dp"
         android:layout_marginTop="0dp"
         android:orientation="vertical">
 
@@ -26,31 +26,62 @@ S1509449
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:text="@string/name_ID"
+            android:text="@string/TITLE_Sort"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="225dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="309dp"
-            android:text="@string/Data_Button_Descriptor"
-            android:textSize="20sp" />
 
         <Button
-            android:id="@+id/startButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/sortNorthButton"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="337dp"
-            android:layout_marginBottom="181dp"
-            android:text="@string/BUTTON_Find_Data" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="@string/BUTTON_North_Sort" />
+        <Button
+            android:id="@+id/sortEastButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:text="@string/BUTTON_East_Sort" />
+        <Button
+            android:id="@+id/sortSouthButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:text="@string/BUTTON_South_Sort" />
+        <Button
+            android:id="@+id/sortWestButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:text="@string/BUTTON_West_Sort" />
 
+        <Spinner
+    android:id="@+id/dataDropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="275dp" />
 
+        <Spinner
+            android:id="@+id/sortConditionDropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="325dp" />
         <TextView
             android:id="@+id/acknowledgement"
             android:layout_width="229dp"
@@ -59,86 +90,18 @@ S1509449
             android:layout_alignParentBottom="true"
             android:text="@string/legal_tag"
             android:textSize="20sp" />
+
+
     </RelativeLayout>
-
-    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="726dp"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp">-->
-
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/dateDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Date"
-                android:textSize="20sp" />
-            <TextView
-                android:id="@+id/timeDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Time"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/locationDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Location"
-                android:textSize="20sp" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/BUTTON_More_Info"/>
-
-           &lt;!&ndash; <TextView
-                android:id="@+id/depthDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Depth"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/magDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Magnitude"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/latDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Latitude"
-                android:textSize="20sp" />
-            <TextView
-                android:id="@+id/longDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Placeholder_Longitude"
-                android:textSize="20sp" />&ndash;&gt;
-
-        </LinearLayout>-->
-
-    <!--</ScrollView>-->
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dataDisplay"
-        android:layout_width="750dp"
+        android:layout_width="728dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp">
+        android:layout_marginStart="0px"
+        android:layout_marginEnd="232dp">
 
 
     </android.support.v7.widget.RecyclerView>

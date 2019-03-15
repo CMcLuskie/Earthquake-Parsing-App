@@ -72,7 +72,7 @@ S1509449
                 android:text="@string/Placeholder_Latitude"
                 android:textSize="20sp" />
             <TextView
-                android:id="@+id/longDisplay"
+                android:id="@+id/longDisplay"ss
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Placeholder_Longitude"
@@ -81,9 +81,7 @@ S1509449
                 android:id="@+id/infoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="100dp"
                 android:text="@string/BUTTON_More_Info" />
 
         </LinearLayout>

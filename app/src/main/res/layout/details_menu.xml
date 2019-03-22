@@ -151,4 +151,13 @@ S1509449
         android:textAlignment="center"
         android:textStyle="bold" />
 
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="552dp"
+        android:layout_height="432dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="22dp" />
+
 </RelativeLayout>

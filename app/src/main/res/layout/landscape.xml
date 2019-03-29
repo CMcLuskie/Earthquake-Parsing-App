@@ -70,18 +70,20 @@ S1509449
             android:text="@string/BUTTON_West_Sort" />
 
         <Spinner
-    android:id="@+id/dataDropdown"
+            android:id="@+id/dataDropdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp" />
+            android:layout_marginTop="275dp"
+            android:hapticFeedbackEnabled="true" />
 
         <Spinner
             android:id="@+id/sortConditionDropdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="325dp" />
+            android:layout_marginTop="325dp"
+            android:hapticFeedbackEnabled="true" />
         <TextView
             android:id="@+id/acknowledgement"
             android:layout_width="229dp"
@@ -95,12 +97,22 @@ S1509449
     </RelativeLayout>
 
 
+    <menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item android:id="@+id/earthquakeSearch"
+            android:icon="@drawable/ic_search"
+            android:title="Search"
+            app:showAsAction="ifRoom|collapseActionView"
+            app:actionViewClass="android.support.v7.widget.SearchView"/>
+    </menu>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dataDisplay"
         android:layout_width="728dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0px"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="232dp">
 
 

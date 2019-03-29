@@ -21,6 +21,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -28,6 +31,9 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String magString;
 
     private RecyclerView dataDisplay;
-    private RecyclerView.Adapter dataAdapter;
+    private DataAdapter dataAdapter;
     private RecyclerView.LayoutManager dataLayoutMgr;
 
     private List<Earthquake> earthquakes;
@@ -404,6 +410,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         InitialiseRecycleView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.earthquakes_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.earthquakeSearch);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                dataAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return  true;
+    }
+
     /*@Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long)
     {
@@ -598,13 +628,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    private class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+    private class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> implements Filterable {
         List<Earthquake> earthquakes;
+        List<Earthquake> earthquakesComplete;
         Context context;
 
         public DataAdapter(List<Earthquake> earthquakes, Context context) {
             this.earthquakes = earthquakes;
+            earthquakesComplete = new ArrayList<>(earthquakes);
             this.context = context;
+
         }
 
         @NonNull
@@ -631,6 +664,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public int getItemCount() {
             return earthquakes.size();
         }
+
+
+        @Override
+        public Filter getFilter() {
+            return earthquakeFilter;
+        }
+
+        private Filter earthquakeFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<Earthquake> filteredList = new ArrayList<>();
+
+                if(constraint == null || constraint.length() ==0){
+                    filteredList.addAll(earthquakesComplete);
+                }
+                else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+
+                    for(Earthquake e : earthquakesComplete)
+                    {
+                        if(e.location.toLowerCase().contains(filterPattern)) {
+                            filteredList.add(e);
+                        }
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                earthquakes.clear();
+                earthquakes.addAll((List)results.values);
+                notifyDataSetChanged();
+            }
+        };
 
         public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
             //2
@@ -668,6 +739,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
         }
+
+
 
     }
 

@@ -27,6 +27,7 @@
         <item>Magnitude</item>
         <item>Depth</item>
     </string-array>
+
     <string-array name="DROPDOWN_Sort_Conditions">
         <item>Ascending</item>
         <item>Descending</item>

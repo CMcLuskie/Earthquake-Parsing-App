@@ -66,13 +66,13 @@ public class InformationWindow extends Activity {
     }
 
     private void SetViews(){
-    dateView = findViewById(R.id.dateDetails);
-    timeView = findViewById(R.id.timeDetails);
-    locationView = findViewById(R.id.locationDetails);
-    latView = findViewById(R.id.latitudeDetails);
+    dateView = (TextView) findViewById(R.id.dateDetails);
+    timeView = (TextView) findViewById(R.id.timeDetails);
+    locationView = (TextView) findViewById(R.id.locationDetails);
+    latView = (TextView)findViewById(R.id.latitudeDetails);
    // longView = (TextView)findViewById(R.id.);
-    depthView = findViewById(R.id.depthDetails);
-    magView = findViewById(R.id.magnitudeDetails);
+    depthView = (TextView)findViewById(R.id.depthDetails);
+    magView = (TextView)findViewById(R.id.magnitudeDetails);
 
     }
 

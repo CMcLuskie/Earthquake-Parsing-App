@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Conall McLuskie
+S1509449
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="116dp"
+        android:layout_height="338dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="1dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/name_ID"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <!--<TextView
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="309dp"
+            android:text="@string/Data_Button_Descriptor"
+            android:textSize="20sp" />-->
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="337dp"
+            android:layout_marginBottom="181dp"
+            android:text="@string/BUTTON_Find_Data" />
+
+
+        <TextView
+            android:id="@+id/acknowledgement"
+            android:layout_width="229dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/legal_tag"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dataDisplay"
+        android:layout_width="564dp"
+        android:layout_height="338dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="2dp">
+
+    </android.support.v7.widget.RecyclerView>
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_background"
+        android:text="@string/Sort_Menu" />
+</RelativeLayout>

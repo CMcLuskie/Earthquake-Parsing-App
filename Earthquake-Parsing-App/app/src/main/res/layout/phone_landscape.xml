@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
 Conall McLuskie
 S1509449
@@ -10,12 +11,12 @@ S1509449
 
     <RelativeLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="116dp"
-        android:layout_height="338dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical">
 
         <TextView
@@ -25,31 +26,62 @@ S1509449
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:text="@string/name_ID"
+            android:text="@string/TITLE_Sort"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <!--<TextView
-            android:layout_width="225dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="309dp"
-            android:text="@string/Data_Button_Descriptor"
-            android:textSize="20sp" />-->
 
         <Button
-            android:id="@+id/startButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/sortNorthButton"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="337dp"
-            android:layout_marginBottom="181dp"
-            android:text="@string/BUTTON_Find_Data" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="@string/BUTTON_North_Sort" />
+        <Button
+            android:id="@+id/sortEastButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:text="@string/BUTTON_East_Sort" />
+        <Button
+            android:id="@+id/sortSouthButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:text="@string/BUTTON_South_Sort" />
+        <Button
+            android:id="@+id/sortWestButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:text="@string/BUTTON_West_Sort" />
 
+        <Spinner
+            android:id="@+id/dataDropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="275dp" />
 
+        <Spinner
+            android:id="@+id/sortConditionDropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="325dp" />
         <TextView
             android:id="@+id/acknowledgement"
             android:layout_width="229dp"
@@ -58,18 +90,22 @@ S1509449
             android:layout_alignParentBottom="true"
             android:text="@string/legal_tag"
             android:textSize="20sp" />
+
+
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dataDisplay"
-        android:layout_width="564dp"
-        android:layout_height="338dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0px"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="2dp">
+        android:layout_marginEnd="232dp">
+
 
     </android.support.v7.widget.RecyclerView>
+
     <Button
         android:id="@+id/menuButton"
         android:layout_width="50dp"
@@ -82,3 +118,4 @@ S1509449
         android:background="@drawable/button_background"
         android:text="@string/Sort_Menu" />
 </RelativeLayout>
+

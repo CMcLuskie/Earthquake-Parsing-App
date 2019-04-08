@@ -14,11 +14,15 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Debug;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private DropDownConditions dropDownCondition = DropDownConditions.Ascending;
 
+    private Toolbar sortBar = null;
+    private DrawerLayout drawer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,8 +188,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             setContentView(R.layout.error);
         }
+        sortBar = findViewById(R.id.toolbar);
+        setSupportActionBar(sortBar);
+
+        drawer = findViewById(R.id.sortDrawer);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, sortBar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        dropDownValues = findViewById(R.id.dataDropdown);
+        ArrayAdapter<CharSequence> valueAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Values, android.R.layout.simple_spinner_item);
+        valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDownValues.setAdapter(valueAdapter);
+        dropDownValues.setOnItemSelectedListener(this);
+
+        dropDownValueCondition = findViewById(R.id.sortConditionDropdown);
+        ArrayAdapter<CharSequence> conditionAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Sort_Conditions, android.R.layout.simple_spinner_item);
+        valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDownValueCondition.setAdapter(conditionAdapter);
+        dropDownValueCondition.setOnItemSelectedListener(this);
+        InitialiseRecycleView();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
 
     private Float FindRatio() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -415,6 +452,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
 
@@ -435,12 +473,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return  true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.northMenu:
+                Sort(SortCondition.North, SortValue.Direction);
+                return true;
+            case  R.id.eastMenu:
+                Sort(SortCondition.East, SortValue.Direction);
+                return true;
+            case  R.id.southMenu:
+                Sort(SortCondition.South, SortValue.Direction);
+                return true;
+            case  R.id.westMenu:
+                Sort(SortCondition.West, SortValue.Direction);
+                return true;
+
+
+
+                        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /*@Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long)
-    {
-        String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-    }*/
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long)
+        {
+            String text = parent.getItemAtPosition(position).toString();
+            Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+        }*/
     // Need separate thread to access the internet resource over network
     // Other neater solutions should be adopted in later iterations.
     private class Task implements Runnable {

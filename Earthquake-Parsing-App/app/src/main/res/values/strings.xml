@@ -22,6 +22,8 @@
     <string name="BUTTON_West_Sort">West</string>
     <string name="BUTTON_South_Sort">South</string>
     <string name="hint_name">Search For Location</string>
+    <string name = "navigation_drawer_open">Open Navigation</string>
+    <string name="navigation_drawer_close">Close Navigation</string>
     <string-array name="DROPDOWN_Values">
         <item>Location</item>
         <item>Date + Time</item>

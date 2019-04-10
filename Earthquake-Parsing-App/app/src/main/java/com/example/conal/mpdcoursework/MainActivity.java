@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Debug;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -61,11 +62,12 @@ import java.util.List;
 Conall McLuskie
 S1509449
  */
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private Button startButton;
     private String result = null;
     private String url1 = "";
     private String urlSource = "http://quakes.bgs.ac.uk/feeds/MhSeismology.xml";
+
 
     private enum Orientation {landscape, portrait}
 
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private List<Earthquake> earthquakes;
 
-
+    private EarthquakeList earthquakeList;
     private Button northSortButton;
     private Button eastSortButton;
     private Button southSortButton;
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         startProgress();
 
+        earthquakeList = new EarthquakeList();
         earthquakes = new ArrayList<Earthquake>();
         aspectRatio = FindRatio();
 
@@ -131,15 +134,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     void InitialiseRecycleView() {
-        if (dataDisplay != null)
-            dataDisplay = null;
-
-        dataDisplay = findViewById(R.id.dataDisplay);
-        dataDisplay.setHasFixedSize(true);
-        dataLayoutMgr = new LinearLayoutManager(this);
-        dataDisplay.setLayoutManager(dataLayoutMgr);
-        dataAdapter = new DataAdapter(earthquakes, this);
-        dataDisplay.setAdapter(dataAdapter);
+//        if (dataDisplay != null)
+//            dataDisplay = null;
+//        dataDisplay = findViewById(R.id.dataDisplay);
+//        dataDisplay.setHasFixedSize(true);
+//        dataLayoutMgr = new LinearLayoutManager(earthquakeList.getContext());
+//        dataDisplay.setLayoutManager(dataLayoutMgr);
+//        dataAdapter = new DataAdapter(earthquakes, earthquakeList.getContext());
+//        dataDisplay.setAdapter(dataAdapter);
     }
 
     void InitialiseView(Orientation orientation) {
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 case portrait:
                     setContentView(R.layout.phone_portrait);
                     SetOrientation(Orientation.portrait);
-                    InitialiseRecycleView();
+                      InitialiseRecycleView();
                     break;
 
             }
@@ -166,17 +168,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 case landscape:
 
                     SetOrientation(Orientation.landscape);
-                    dropDownValues = findViewById(R.id.dataDropdown);
-                    ArrayAdapter<CharSequence> valueAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Values, android.R.layout.simple_spinner_item);
-                    valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    dropDownValues.setAdapter(valueAdapter);
-                    dropDownValues.setOnItemSelectedListener(this);
-
-                    dropDownValueCondition = findViewById(R.id.sortConditionDropdown);
-                    ArrayAdapter<CharSequence> conditionAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Sort_Conditions, android.R.layout.simple_spinner_item);
-                    valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    dropDownValueCondition.setAdapter(conditionAdapter);
-                    dropDownValueCondition.setOnItemSelectedListener(this);
                     InitialiseRecycleView();
                     break;
                 case portrait:
@@ -192,34 +183,52 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(sortBar);
 
         drawer = findViewById(R.id.sortDrawer);
+        NavigationView navigationView = findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, sortBar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        dropDownValues = findViewById(R.id.dataDropdown);
-        ArrayAdapter<CharSequence> valueAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Values, android.R.layout.simple_spinner_item);
-        valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropDownValues.setAdapter(valueAdapter);
-        dropDownValues.setOnItemSelectedListener(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                earthquakeList).commit();
 
-        dropDownValueCondition = findViewById(R.id.sortConditionDropdown);
-        ArrayAdapter<CharSequence> conditionAdapter = ArrayAdapter.createFromResource(this, R.array.DROPDOWN_Sort_Conditions, android.R.layout.simple_spinner_item);
-        valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropDownValueCondition.setAdapter(conditionAdapter);
-        dropDownValueCondition.setOnItemSelectedListener(this);
-        InitialiseRecycleView();
+        earthquakeList.In
+        // InitialiseRecycleView();
     }
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                earthquakeList).commit();
+        switch (menuItem.getItemId()) {
+            case R.id.northMenu:
+
+                break;
+            case R.id.eastMenu:
+
+                break;
+            case R.id.southMenu:
+
+                break;
+            case R.id.westMenu:
+
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private Float FindRatio() {
@@ -258,12 +267,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             startProgress();
             SetOrientation(Orientation.landscape);
-            InitialiseRecycleView();
+            //  InitialiseRecycleView();
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             startProgress();
             SetOrientation(Orientation.portrait);
-            InitialiseRecycleView();
+            //InitialiseRecycleView();
 
         } else {
             setContentView(R.layout.error);
@@ -280,16 +289,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (parent.getId() == R.id.dataDropdown) {
             if (text.equals("Location"))
                 dropDownValue = DropDownValues.Location;
-           else if (text.equals("Date + Time"))
+            else if (text.equals("Date + Time"))
                 dropDownValue = DropDownValues.DateTime;
-           else if (text.equals("Magnitude"))
+            else if (text.equals("Magnitude"))
                 dropDownValue = DropDownValues.Magnitude;
             else if (text.equals("Depth"))
                 dropDownValue = DropDownValues.Depth;
         }
 
         int iD = parent.getId();
-        Log.e("Sort",  Integer.toString(iD));
+        Log.e("Sort", Integer.toString(iD));
         if (parent.getId() == R.id.sortConditionDropdown) {
             if (text.equals("Ascending"))
                 dropDownCondition = DropDownConditions.Ascending;
@@ -300,13 +309,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         DropDownSort();
     }
 
-    void DropDownSort()
-    {
-        switch (dropDownCondition)
-        {
+    void DropDownSort() {
+        switch (dropDownCondition) {
             case Ascending:
-                switch (dropDownValue)
-                {
+                switch (dropDownValue) {
                     case Location:
                         Sort(SortCondition.Ascending, SortValue.LocationName);
                         break;
@@ -319,14 +325,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case Depth:
                         Sort(SortCondition.Ascending, SortValue.Depth);
                         break;
-                        default:
-                            Log.e("Sort", "Default");
-                            break;
+                    default:
+                        Log.e("Sort", "Default");
+                        break;
                 }
                 break;
             case Descending:
-                switch (dropDownValue)
-                {
+                switch (dropDownValue) {
                     case Location:
                         Sort(SortCondition.Descending, SortValue.LocationName);
                         break;
@@ -375,14 +380,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             setContentView(R.layout.error);
         }
 
-        northSortButton = findViewById(R.id.sortNorthButton);
-        northSortButton.setOnClickListener(this);
-        eastSortButton = findViewById(R.id.sortEastButton);
-        eastSortButton.setOnClickListener(this);
-        southSortButton = findViewById(R.id.sortSouthButton);
-        southSortButton.setOnClickListener(this);
-        westSortButton = findViewById(R.id.sortWestButton);
-        westSortButton.setOnClickListener(this);
     }
 
     private enum SortCondition {
@@ -421,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Collections.sort(earthquakes, new SortMagAscending());
                         break;
                     case Depth:
-                        						Collections.sort(earthquakes, new SortDepthAscending());
+                        Collections.sort(earthquakes, new SortDepthAscending());
 
                         break;
                 }
@@ -438,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Collections.sort(earthquakes, new SortMagDescending());
                         break;
                     case Depth:
-						Collections.sort(earthquakes, new SortDepthDescending());
+                        Collections.sort(earthquakes, new SortDepthDescending());
                         break;
                 }
                 break;
@@ -447,8 +444,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
@@ -470,29 +466,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        return  true;
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.northMenu:
                 Sort(SortCondition.North, SortValue.Direction);
                 return true;
-            case  R.id.eastMenu:
+            case R.id.eastMenu:
                 Sort(SortCondition.East, SortValue.Direction);
                 return true;
-            case  R.id.southMenu:
+            case R.id.southMenu:
                 Sort(SortCondition.South, SortValue.Direction);
                 return true;
-            case  R.id.westMenu:
+            case R.id.westMenu:
                 Sort(SortCondition.West, SortValue.Direction);
                 return true;
 
 
-
-                        }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -646,161 +640,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
-        void DisplayList() {
-           /* for(int i = 0; i < earthquakes.size(); i++)
-            {
-
-                Earthquake earthquake = earthquakes.get(i);
-                Date date = earthquake.date;
-                Time time = earthquake.time;
-
-                if(dateString == null)
-                {
-                    NullNullifier();
-                }
-
-                dateString +=  date.dayName + " " +
-                        String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year)+ " " + "\n";
-                timeString +=
-                        String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes)+ ":" + String.format("%.0f", time.seconds)+ " " + "\n";
-                locationString +=  earthquake.location + " " + "\n";
-                //Shit Under Here doesnt display
-                latString += String.format("%.2f", earthquake.latitude) + " " + "\n";
-                longString +=  String.format("%.2f", earthquake.longitude) + " " + "\n";
-                depthString +=  String.format("%.0f", earthquake.depth) + "km " + "\n";
-                latString += Float.toString(earthquake.latitude) + " " + "\n";
-                longString += Float.toString(earthquake.longitude) + " " + "\n";
-                depthString += Float.toString(earthquake.depth) + " " + "\n";
-                //this displays
-                 magString +=  String.format("%.0f", earthquake.magnitude) + " " + "\n";
-
-
-            }*/
-            InitialiseRecycleView();
-        }
-
-        void NullNullifier() {
-            dateString = "";
-            timeString = "";
-            locationString = "";
-            latString = "";
-            longString = "";
-            depthString = "";
-            magString = "";
-        }
     }
 
-    private class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> implements Filterable {
-        List<Earthquake> earthquakes;
-        List<Earthquake> earthquakesComplete;
-        Context context;
-
-        public DataAdapter(List<Earthquake> earthquakes, Context context) {
-            this.earthquakes = earthquakes;
-            earthquakesComplete = new ArrayList<>(earthquakes);
-
-            this.context = context;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            //1
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.earthquake_layout, viewGroup, false);
-            return new ViewHolder(v, earthquakes.get(i));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-            Earthquake earthquake = earthquakes.get(i);
-//3
-            viewHolder.earthquake = earthquake;
-            Date date = earthquake.date;
-            viewHolder.dateView.setText("Date: " + String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year) + " ");
-            Time time = earthquake.time;
-            viewHolder.timeView.setText("Time: " + String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes) + ":" + String.format("%.0f", time.seconds) + " ");
-            viewHolder.locationView.setText(earthquake.location);
-        }
-
-        @Override
-        public int getItemCount() {
-            return earthquakes.size();
-        }
-
-        @Override
-        public Filter getFilter() {
-            return earthquakeFilter;
-        }
-
-        private Filter earthquakeFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                List<Earthquake> filteredList = new ArrayList<>();
-
-                if(constraint == null || constraint.length() == 0)
-                    filteredList.addAll(earthquakesComplete);
-                else
-                {
-                    String filterPattern = constraint.toString().toLowerCase().trim();
-
-                    for(Earthquake e: earthquakesComplete)
-                    {
-                        if(e.location.toLowerCase().contains(filterPattern))
-                            filteredList.add(e);
-                    }
-                }
-
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                earthquakes.clear();
-                earthquakes.addAll((List)results.values);
-                notifyDataSetChanged();
-            }
-        };
-
-        public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-            //2
-            public TextView dateView;
-            public TextView timeView;
-            public TextView locationView;
-            public Button infoButton;
-            Earthquake earthquake;
-
-            public ViewHolder(@NonNull View itemView, Earthquake aearthquake) {
-                super(itemView);
-                earthquake = aearthquake;
-                dateView = itemView.findViewById(R.id.dateDisplay);
-                timeView = itemView.findViewById(R.id.timeDisplay);
-                locationView = itemView.findViewById(R.id.locationDisplay);
-                infoButton = itemView.findViewById(R.id.infoButton);
-                infoButton.setOnClickListener(this);
-
-            }
-
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, InformationWindow.class);
-                Date date = earthquake.date;
-                Time time = earthquake.time;
-                Log.e("Window", earthquake.location);
-                intent.putExtra("date", String.format("%.0f", date.dayNumber) + "/" + date.month + "/" + String.format("%.0f", date.year));
-                intent.putExtra("time", String.format("%.0f", time.hour) + ":" + String.format("%.0f", time.minutes) + ":" + String.format("%.0f", time.seconds));
-                intent.putExtra("location", earthquake.location);
-                intent.putExtra("latitude", String.format("%.3f", earthquake.latitude));
-                intent.putExtra("longitude", String.format("%.3f", earthquake.longitude));
-                intent.putExtra("depth", String.format("%.0f", earthquake.depth));
-                intent.putExtra("magnitude", String.format("%.1f", earthquake.magnitude));
-                startActivity(intent);
-
-
-            }
-        }
-
-    }
 
     class Earthquake {
         public Date date;
@@ -929,6 +770,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return (int) aDepth - (int) bDepth;
         }
     }
+
     class SortDepthDescending implements Comparator<Earthquake> {
         public int compare(Earthquake a, Earthquake b) {
             float aDepth = a.depth;

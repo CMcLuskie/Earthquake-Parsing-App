@@ -7,115 +7,61 @@ S1509449
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:baselineAligned="false">
 
-    <RelativeLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/sortDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
 
-        <TextView
-            android:layout_width="225dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:text="@string/TITLE_Sort"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-        <Button
-            android:id="@+id/sortNorthButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="@string/BUTTON_North_Sort" />
-        <Button
-            android:id="@+id/sortEastButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:text="@string/BUTTON_East_Sort" />
-        <Button
-            android:id="@+id/sortSouthButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:text="@string/BUTTON_South_Sort" />
-        <Button
-            android:id="@+id/sortWestButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
-            android:text="@string/BUTTON_West_Sort" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dataDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                >
+            </android.support.v7.widget.RecyclerView>
 
-        <Spinner
-            android:id="@+id/dataDropdown"
+
+            <FrameLayout
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp" />
-
-        <Spinner
-            android:id="@+id/sortConditionDropdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="325dp" />
-        <TextView
-            android:id="@+id/acknowledgement"
-            android:layout_width="229dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:text="@string/legal_tag"
-            android:textSize="20sp" />
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/sort_header"
+            app:menu="@menu/menu" />
+    </android.support.v4.widget.DrawerLayout>
 
 
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dataDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0px"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="232dp">
-
-
-    </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/menuButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_background"
-        android:text="@string/Sort_Menu" />
 </RelativeLayout>
 

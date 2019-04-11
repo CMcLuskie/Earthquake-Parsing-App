@@ -10,10 +10,9 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
-    <item android:id="@+id/sortMenu"
-        android:title="Compass"
+    <item android:id="@+id/compassDirection"
+        android:title="Sort By Compass Direction"
         app:showAsAction="never">
-
         <menu>
             <item android:id="@+id/northMenu"
                 android:title="North"/>
@@ -26,9 +25,43 @@
         </menu>
     </item>
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/data"
-            android:title="Data Dropdown"/>
-    </group>
+    <item android:id="@+id/Dropdowns"
+        android:title="Misc Sort"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/locationSort"
+                android:title="Location"/>
+            <item android:id="@+id/magnitudeSort"
+                android:title="Magnitude"/>
+            <item android:id="@+id/depthSort"
+                android:title="Depth"/>
+
+           <item android:id="@+id/orderGroup"
+               android:title="Order"
+               app:showAsAction="never">
+
+               <!--This menu is here to turn the above item into a title. -->
+               <!--the menu wouldnt display the ascending and descenening items when they were inside thats wy its empty-->
+               <menu> </menu>
+
+               <!--This item is a throwaway because the ascending item was being hidden-->
+               <!--therefor this item was put in to be hidden instead as its not needed-->
+               <item android:id="@+id/throwaway"
+                   android:title=""/>
+
+               <item android:id="@+id/ascending"
+                   android:title="Ascending"
+                   android:checkable="true"
+                  />
+
+               <item android:id="@+id/descending"
+                   android:title="Descending"
+                   android:checkable="true"
+                   />
+
+           </item>
+
+        </menu>
+    </item>
 
 </menu>
